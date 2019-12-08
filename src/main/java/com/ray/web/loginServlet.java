@@ -1,6 +1,8 @@
 package com.ray.web;
 
+import com.ray.domain.Detail;
 import com.ray.domain.User;
+import com.ray.service.impl.DetailService;
 import com.ray.service.impl.UserService;
 
 import javax.servlet.ServletException;
@@ -10,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/loginServlet")
 public class loginServlet extends HttpServlet {
+    private DetailService detailService = new DetailService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.设置编码
         request.setCharacterEncoding("UTF-8");
@@ -42,6 +46,12 @@ public class loginServlet extends HttpServlet {
 //            loginUser.setBalance(balance);
 //            System.out.println("余额："+balance);
             session.setAttribute("user",loginUser);
+            List<Detail> details = detailService.allDetails(loginUser.getUsername());
+//            for (Detail detail: details) {
+//                System.out.println(detail.toString());
+//
+//            }
+            session.setAttribute("details",details);
 //            System.out.println(user.toString());
             response.sendRedirect(request.getContextPath()+"/account.jsp");
         }

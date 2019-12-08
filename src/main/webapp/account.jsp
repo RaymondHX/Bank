@@ -1,25 +1,29 @@
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" isELIgnored="false" %>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 <!doctype html>
-<html lang="zh">
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page isELIgnored="false" %>
+
+<html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>个人主页</title>
 
-<%--    <link rel="stylesheet" type="text/css" href="css/normalize.css" />--%>
-<%--    <link rel="stylesheet" type="text/css" href="css/default.css">--%>
+    <%--    <link rel="stylesheet" type="text/css" href="css/normalize.css" />--%>
+    <%--    <link rel="stylesheet" type="text/css" href="css/default.css">--%>
     <!-- 1. 导入CSS的全局样式 -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- 2. jQuery导入，建议使用1.9以上的版本 -->
     <script src="js/jquery-2.1.0.min.js"></script>
     <!-- 3. 导入bootstrap的js文件 -->
     <script src="js/bootstrap.min.js"></script>
-<%--    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">--%>
-<%--    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">--%>
-<%--    <link rel="stylesheet" href="assets/css/form-elements.css">--%>
-<%--    <link rel="stylesheet" href="assets/css/style.css">--%>
+    <%--    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">--%>
+    <%--    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">--%>
+    <%--    <link rel="stylesheet" href="assets/css/form-elements.css">--%>
+    <%--    <link rel="stylesheet" href="assets/css/style.css">--%>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -57,7 +61,7 @@
 
         .icon.active {
             /*fill: #E74C3C;*/
-            fill:#66cbbb;
+            fill: #66cbbb;
         }
 
         .icon.big {
@@ -108,6 +112,7 @@
             -ms-flex-pack: center;
             justify-content: center;
         }
+
         #left-side ul li {
             padding-top: 10px;
             padding-bottom: 10px;
@@ -122,17 +127,21 @@
             -webkit-transition: all .2s ease-out;
             transition: all .2s ease-out;
         }
+
         #left-side ul li:hover {
             color: #333333;
             -webkit-transition: all .2s ease-out;
             transition: all .2s ease-out;
         }
+
         #left-side ul li:hover > .icon {
             fill: #333;
         }
+
         #left-side ul li.active {
             color: #333333;
         }
+
         #left-side ul li.active:hover > .icon {
             fill: #E74C3C;
         }
@@ -142,6 +151,7 @@
             width: 1px;
             background-color: rgba(51, 51, 51, 0.2);
         }
+
         #border #line.one {
             width: 5px;
             height: 54px;
@@ -151,6 +161,7 @@
             -webkit-transition: all .4s ease-in-out;
             transition: all .4s ease-in-out;
         }
+
         #border #line.two {
             width: 5px;
             height: 54px;
@@ -160,6 +171,7 @@
             -webkit-transition: all .4s ease-in-out;
             transition: all .4s ease-in-out;
         }
+
         #border #line.three {
             width: 5px;
             height: 54px;
@@ -169,6 +181,7 @@
             -webkit-transition: all .4s ease-in-out;
             transition: all .4s ease-in-out;
         }
+
         #border #line.four {
             width: 5px;
             height: 54px;
@@ -184,6 +197,7 @@
             width: 75%;
             overflow: hidden;
         }
+
         #right-side #first, #right-side #second, #right-side #third, #right-side #fourth {
             position: absolute;
             height: 300px;
@@ -210,16 +224,19 @@
             -ms-flex-direction: column;
             flex-direction: column;
         }
+
         #right-side #first h1, #right-side #second h1, #right-side #third h1, #right-side #fourth h1 {
             font-weight: 800;
             color: #333;
         }
+
         #right-side #first p, #right-side #second p, #right-side #third p, #right-side #fourth p {
             color: #333;
             font-weight: 500;
             padding-left: 30px;
             padding-right: 30px;
         }
+
         #right-side #first.active, #right-side #second.active, #right-side #third.active, #right-side #fourth.active {
             margin-top: 0px;
             opacity: 1;
@@ -228,12 +245,13 @@
         }
     </style>
 
-
-
 </head>
+
+
 <body>
 
-<svg id="svg-source" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
+<svg id="svg-source" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
     <g id="shopping-cart" data-iconmelon="e-commerce icons:7c96e2dece0152dc594d66b260f79db0">
         <path d="M22.463,25.841c0.528,0,0.918-0.429,0.918-0.958v-6.786c0-0.529-0.39-0.958-0.918-0.958c-0.529,0-0.92,0.429-0.92,0.958
 	v6.786C21.543,25.413,21.934,25.841,22.463,25.841z M18.156,25.841c0.529,0,0.919-0.429,0.919-0.958v-6.786
@@ -281,7 +299,6 @@
 <!-- ICONS -->
 
 
-
 <div id="wrapper">
     <div id="left-side">
         <ul>
@@ -297,8 +314,6 @@
                 </div>
                 首页
             </li>
-
-
 
 
             <li class="pay">
@@ -323,7 +338,6 @@
                 </div>
                 明细
             </li>
-
 
 
             <li class="ship">
@@ -355,7 +369,7 @@
                 </svg>
             </div>
 
-                        <h1>${user.username},欢迎您</h1>
+            <h1>${user.username},欢迎您</h1>
         </div>
 
 
@@ -386,25 +400,19 @@
 
             <table border="1" class="table table-bordered table-hover">
                 <tr class="success">
-<%--                    <th><input type="checkbox"></th>--%>
                     <th>用户</th>
                     <th>时间</th>
                     <th>转入</th>
                     <th>转出</th>
                 </tr>
-<%--                <c:forEach items="${users}" var="user" varStatus="s">--%>
-<%--                    <tr>--%>
-<%--                        <th><input type="checkbox"></th>--%>
-<%--                        <td>${s.count}</td>--%>
-<%--                        <td>${user.name}</td>--%>
-<%--                        <td>${user.gender}</td>--%>
-<%--                        <td>${user.age}</td>--%>
-<%--                        <td>${user.address}</td>--%>
-<%--                        <td>${user.qq}</td>--%>
-<%--                        <td>${user.email}</td>--%>
-<%--                        <td><a class="btn btn-default btn-sm" href="update.html">修改</a>&nbsp;<a class="btn btn-default btn-sm" href="">删除</a></td>--%>
-<%--                    </tr>--%>
-<%--                </c:forEach>--%>
+                <c:forEach items="${details}" var="detail" varStatus="s">
+                    <tr>
+                        <td>${detail.username}</td>
+                        <td>${detail.date}</td>
+                        <td>${detail.in}</td>
+                        <td>${detail.out}</td>
+                    </tr>
+                </c:forEach>
 
 
             </table>
@@ -412,29 +420,29 @@
         </div>
         <div id="fourth">
             <form action="/transferServlet" method="post">
-            <div class="icon big">
-                <svg viewBox="0 0 32 32">
-                    <g filter="">
-                        <use xlink:href="#package"></use>
-                    </g>
-                </svg>
-            </div>
+                <div class="icon big">
+                    <svg viewBox="0 0 32 32">
+                        <g filter="">
+                            <use xlink:href="#package"></use>
+                        </g>
+                    </svg>
+                </div>
 
-            <h1>转账</h1>
+                <h1>转账</h1>
 
-            <div class="form-group1">
-                <label for="account">转入账户</label>
-                <input type="text" name="account" class="form-control" id="account" >
-            </div>
-            <div class="form-group2">
-                <label for="money">转入金额</label>
-                <input type="text" name="money" class="form-control" id="money" >
-            </div>
+                <div class="form-group1">
+                    <label for="account">转入账户</label>
+                    <input type="text" name="account" class="form-control" id="account">
+                </div>
+                <div class="form-group2">
+                    <label for="money">转入金额</label>
+                    <input type="text" name="money" class="form-control" id="money">
+                </div>
                 <div class="form-group3">
                     <label for="password">密码</label>
-                    <input type="text" name="password" class="form-control" id="password" >
+                    <input type="text" name="password" class="form-control" id="password">
                 </div>
-            <button type="submit" class="btn btn-default">确认</button>
+                <button type="submit" class="btn btn-default">确认</button>
             </form>
         </div>
 
