@@ -12,5 +12,7 @@ public interface IUserDao {
 
     public boolean transfer (String from,String to,double money);
 
-    public boolean signupUser(String username,String password);
+    public boolean signupUser(String username,String password,String salt);
+
+    public String getSalt(String username);
 }

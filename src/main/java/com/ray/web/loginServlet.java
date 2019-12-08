@@ -1,5 +1,6 @@
 package com.ray.web;
 
+import com.ray.crypo.Sha256;
 import com.ray.domain.Detail;
 import com.ray.domain.User;
 import com.ray.service.impl.DetailService;
@@ -36,9 +37,12 @@ public class loginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user = new User();
-        user.setPassword(password);
         user.setUsername(username);
         UserService userService = new UserService();
+        String salt = userService.getSalt(username);
+        System.out.println("getsalt"+salt);
+        user.setPassword(Sha256.getSHA256(password+salt));
+        System.out.println("pazsword"+user.getPassword());
         User loginUser = userService.findUser(user);
         if(loginUser!=null){
             //将用户存入session

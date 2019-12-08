@@ -1,9 +1,22 @@
 package com.ray.domain;
 
 public class User {
+
+
     private String username;
     private String password;
     private double balance;
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+
 
     public String getUsername() {
         return username;
@@ -35,6 +48,7 @@ public class User {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", balance=" + balance +
+                ", salt='" + salt + '\'' +
                 '}';
     }
 }

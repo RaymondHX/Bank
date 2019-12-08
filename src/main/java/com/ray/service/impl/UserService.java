@@ -25,8 +25,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean signupUser(String username, String password) {
-        return userDao.signupUser(username,password);
+    public boolean signupUser(String username, String password,String salt) {
+        return userDao.signupUser(username,password,salt);
+    }
+
+    @Override
+    public String getSalt(String username) {
+        return userDao.getSalt(username);
     }
 
 

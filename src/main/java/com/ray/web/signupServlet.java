@@ -1,5 +1,6 @@
 package com.ray.web;
 
+import com.ray.crypo.Sha256;
 import com.ray.domain.User;
 import com.ray.service.IUserService;
 import com.ray.service.impl.UserService;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 @WebServlet("/signupServlet")
 public class signupServlet extends HttpServlet {
@@ -31,16 +34,30 @@ public class signupServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String pass = request.getParameter("password");
-        User user = new User();
-        user.setPassword(pass);
-        user.setUsername(username);
-        IUserService service = new UserService();
-        boolean result = service.signupUser(username,pass);
-        if (result){
-            session.setAttribute("user",user);
+        //利用强伪随机给密码加盐
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            byte bytes[] = new byte[32];
+            random.nextBytes(bytes);
+            String salt = new String(bytes);
+            String hash = Sha256.getSHA256(pass+salt);
+            System.out.println("salt"+salt);
+            User user = new User();
+            user.setPassword(hash);
+            user.setUsername(username);
+            IUserService service = new UserService();
+            boolean result = service.signupUser(username,hash,salt);
+            if (result){
+                session.setAttribute("user",user);
 //            System.out.println(user.toString());
-            response.sendRedirect(request.getContextPath()+"/account.jsp");
+                response.sendRedirect(request.getContextPath()+"/account.jsp");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
+
+
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

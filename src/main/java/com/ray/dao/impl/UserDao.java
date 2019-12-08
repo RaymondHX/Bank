@@ -59,10 +59,10 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public boolean signupUser(String username, String password) {
+    public boolean signupUser(String username, String password,String salt) {
         try{
-            String sql = "insert into account values (?,?,?)";
-            int result = jdbcTemplate.update(sql,username,password,0);
+            String sql = "insert into account values (?,?,?,?)";
+            int result = jdbcTemplate.update(sql,username,password,0,salt);
             if(result==1)
                 return true;
             else
@@ -72,4 +72,20 @@ public class UserDao implements IUserDao {
             return false;
         }
     }
+
+    @Override
+    public String getSalt(String username) {
+        try {
+            System.out.println("user"+username);
+            String sql = "select * from account where username = ? ";
+            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
+            System.out.println("查询后的结果："+user.getSalt().length());
+            return user.getSalt();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
