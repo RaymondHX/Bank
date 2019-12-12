@@ -1,5 +1,6 @@
 package com.ray.web;
 
+import com.ray.crypo.DESUtils;
 import com.ray.crypo.Sha256;
 import com.ray.domain.User;
 import com.ray.service.IUserService;
@@ -19,6 +20,7 @@ import java.security.SecureRandom;
 public class signupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        DESUtils desUtils = new DESUtils();
         //2.获取数据
         String code = request.getParameter("verifycode");
 
@@ -33,7 +35,21 @@ public class signupServlet extends HttpServlet {
         }
 
         String username = request.getParameter("username");
+        System.out.println(username);
+        try {
+            username =DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
+            System.out.println(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String pass = request.getParameter("password");
+        System.out.println(pass);
+        try {
+            pass = DESUtils.decryption(pass,"6y8SwEs8Fu8YXwvq");
+            System.out.println(pass);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //利用强伪随机给密码加盐
         try {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");

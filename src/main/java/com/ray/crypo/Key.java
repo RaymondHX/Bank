@@ -38,7 +38,7 @@ public class Key {
     public static String loadPublicKeyByFile() throws Exception {
         try {
             BufferedReader br = new BufferedReader(new FileReader(
-                     "src/pk.keystore"));
+                     "E:\\mobanTest\\target\\mobanTest\\pk1.key"));
             String readLine = null;
             StringBuilder sb = new StringBuilder();
             while ((readLine = br.readLine()) != null) {
@@ -60,7 +60,7 @@ public class Key {
      */
     public static String loadPrivateKeyByFile() throws Exception {
         try {
-            BufferedReader br = new BufferedReader(new FileReader( "src/sk.keystore"));
+            BufferedReader br = new BufferedReader(new FileReader( "E:\\mobanTest\\target\\mobanTest\\sk.key"));
             String readLine = null;
             StringBuilder sb = new StringBuilder();
             while ((readLine = br.readLine()) != null) {

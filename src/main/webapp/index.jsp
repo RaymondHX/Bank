@@ -22,12 +22,6 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
 
-    <!-- Favicon and touch icons -->
-<%--    <link rel="shortcut icon" href="assets/ico/favicon.png">--%>
-<%--    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">--%>
-<%--    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">--%>
-<%--    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">--%>
-<%--    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">--%>
 
 </head>
 
@@ -84,7 +78,7 @@
 
             <div class="modal-body">
 
-                <form role="form" action="" method="post" class="registration-form">
+                <form role="form" action="" method="post" class="registration-form" id="register_form">
                     <div class="form-group">
                         <label class="sr-only" for="signup-name">First name</label>
                         <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="signup-name">
@@ -100,8 +94,9 @@
                             <img src="/checkCodeServlet" title="看不清点击刷新" id="vcode"/>
                         </a>
                     </div>
-                    <button type="submit" class="btn">Sign me up!</button>
+<%--                    <button type="submit" class="btn">Sign me up!</button>--%>
                 </form>
+                <button id="register_btn" class="btn">Sign me up!</button>
 
             </div>
 
@@ -157,7 +152,10 @@
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.backstretch.min.js"></script>
 <script src="assets/js/scripts.js"></script>
-
+<script type="text/javascript" src="js/crypto-js/core.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/cipher-core.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/mode-ecb.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/tripledes.js" charset="utf-8"></script>
 <!--[if lt IE 10]>
 <script src="assets/js/placeholder.js"></script>
 <![endif]-->
@@ -176,6 +174,28 @@
 
         //2.设置其src属性，加时间戳
         vcode.src = "/checkCodeServlet?time="+new Date().getTime();
+    }
+
+    var register_btn = document.getElementById("register_btn");
+    register_btn.addEventListener("click", function () {
+        reg_encrypt();
+        document.getElementById("register_form").submit();
+    });
+    var signup_name = document.getElementById("signup-name");
+    var signup_password = document.getElementById("signup-password");
+
+    function reg_encrypt() {
+        var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
+        var enc_username = CryptoJS.DES.encrypt(signup_name.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var enc_password = CryptoJS.DES.encrypt(signup_password.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        signup_name.value = enc_username;
+        signup_password.value = enc_password;
     }
 </script>
 </body>

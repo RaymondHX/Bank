@@ -76,14 +76,26 @@ public class UserDao implements IUserDao {
     @Override
     public String getSalt(String username) {
         try {
-            System.out.println("user"+username);
+           // System.out.println("user"+username);
             String sql = "select * from account where username = ? ";
             User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
-            System.out.println("查询后的结果："+user.getSalt().length());
+          //  System.out.println("查询后的结果："+user.getSalt().length());
             return user.getSalt();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void deposit(String username, double money) {
+        try {
+            String sql = "select * from account where username = ? ";
+            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
+            double total = user.getBalance()+money;
+            jdbcTemplate.update("UPDATE account SET balance = ? WHERE username = ?", new Object[] {total, username});
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

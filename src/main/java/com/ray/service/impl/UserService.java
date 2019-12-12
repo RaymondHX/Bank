@@ -34,5 +34,10 @@ public class UserService implements IUserService {
         return userDao.getSalt(username);
     }
 
+    @Override
+    public void deposit(String username, double money) {
+        userDao.deposit(username,money);
+    }
+
 
 }

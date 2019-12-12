@@ -2,11 +2,8 @@ package com.ray.web;
 
 import com.ray.crypo.DESUtils;
 import com.ray.crypo.Sha256;
-import com.ray.dao.IDetailDao;
-import com.ray.domain.Detail;
 import com.ray.domain.User;
 import com.ray.service.IUserService;
-import com.ray.service.impl.DetailService;
 import com.ray.service.impl.UserService;
 
 import javax.servlet.ServletException;
@@ -16,20 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/transferServlet")
-public class transferServlet extends HttpServlet {
-    private DetailService detailService = new DetailService();
+@WebServlet("/deposit")
+public class depositServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.设置编码
         request.setCharacterEncoding("UTF-8");
-        String to = request.getParameter("account");
-        String password = request.getParameter("password");
         String money = request.getParameter("money");
+        String password = request.getParameter("password");
         try {
             password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
-            to = DESUtils.decryption(to,"6y8SwEs8Fu8YXwvq");
             money = DESUtils.decryption(money,"6y8SwEs8Fu8YXwvq");
             System.out.println(money);
         } catch (Exception e) {
@@ -41,10 +34,19 @@ public class transferServlet extends HttpServlet {
         User user =(User) session.getAttribute("user");
         String salt = userService.getSalt(user.getUsername());
         password = Sha256.getSHA256(password+salt);
-        userService.transfer(user.getUsername(),to,money1);
-        detailService.addInfo(user.getUsername(),0,money1);
-        detailService.addInfo(to,money1,0);
-        request.getRequestDispatcher("/account.jsp").forward(request,response);
+        User depositUser = new User();
+        depositUser.setUsername(user.getUsername());
+        depositUser.setPassword(password);
+        User findUser = userService.findUser(user);
+        if(findUser!=null){
+            userService.deposit(user.getUsername(),money1);
+            session.setAttribute("user",user);
+            request.getRequestDispatcher("/account.jsp").forward(request,response);
+
+        }
+        else {
+
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

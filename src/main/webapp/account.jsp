@@ -244,7 +244,10 @@
             transition: all .6s ease-in-out;
         }
     </style>
-
+    <script type="text/javascript" src="js/crypto-js/core.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/crypto-js/cipher-core.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/crypto-js/mode-ecb.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/crypto-js/tripledes.js" charset="utf-8"></script>
 </head>
 
 
@@ -336,7 +339,7 @@
                         </g>
                     </svg>
                 </div>
-                明细
+                存钱
             </li>
 
 
@@ -351,6 +354,16 @@
                 转账
             </li>
 
+<%--            <li class="get">--%>
+<%--                <div class="icon">--%>
+<%--                    <svg viewBox="0 0 32 32">--%>
+<%--                        <g filter="">--%>
+<%--                            <use xlink:href="#shopping-cart"></use>--%>
+<%--                        </g>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+<%--                存取--%>
+<%--            </li>--%>
 
         </ul>
     </div>
@@ -388,6 +401,7 @@
 
 
         <div id="third">
+            <form action="/deposit" method="post" id="deposit_form">
             <div class="icon big">
                 <svg viewBox="0 0 32 32">
                     <g filter="">
@@ -395,31 +409,41 @@
                     </g>
                 </svg>
             </div>
+                            <h1>存取业务</h1>
+            <div class="form-group2">
+                <label for="money">存入金额</label>
+                <input type="text" name="money" class="form-control" id="deposit_money">
+            </div>
+            <div class="form-group3">
+                <label for="password">密码</label>
+                <input type="text" name="password" class="form-control" id="deposit_password">
+            </div>
+            </form>
+            <button type="submit" class="btn btn-default" id="confirm_deposit_btn">确认</button>
+<%--            <h1>明细</h1>--%>
 
-            <h1>明细</h1>
-
-            <table border="1" class="table table-bordered table-hover">
-                <tr class="success">
-                    <th>用户</th>
-                    <th>时间</th>
-                    <th>转入</th>
-                    <th>转出</th>
-                </tr>
-                <c:forEach items="${details}" var="detail" varStatus="s">
-                    <tr>
-                        <td>${detail.username}</td>
-                        <td>${detail.date}</td>
-                        <td>${detail.in}</td>
-                        <td>${detail.out}</td>
-                    </tr>
-                </c:forEach>
+<%--            <table border="1" class="table table-bordered table-hover">--%>
+<%--                <tr class="success">--%>
+<%--                    <th>用户</th>--%>
+<%--                    <th>时间</th>--%>
+<%--                    <th>转入</th>--%>
+<%--                    <th>转出</th>--%>
+<%--                </tr>--%>
+<%--                <c:forEach items="${details}" var="detail" varStatus="s">--%>
+<%--                    <tr>--%>
+<%--                        <td>${detail.username}</td>--%>
+<%--                        <td>${detail.date}</td>--%>
+<%--                        <td>${detail.in}</td>--%>
+<%--                        <td>${detail.out}</td>--%>
+<%--                    </tr>--%>
+<%--                </c:forEach>--%>
 
 
-            </table>
+<%--            </table>--%>
 
         </div>
         <div id="fourth">
-            <form action="/transferServlet" method="post">
+            <form id="transfer" action="/transferServlet" method="post" >
                 <div class="icon big">
                     <svg viewBox="0 0 32 32">
                         <g filter="">
@@ -442,9 +466,28 @@
                     <label for="password">密码</label>
                     <input type="text" name="password" class="form-control" id="password">
                 </div>
-                <button type="submit" class="btn btn-default">确认</button>
+
             </form>
+            <button  class="btn btn-default" id="confirm_button">确认</button>
         </div>
+
+
+<%--        <div id="fivth">--%>
+
+<%--                <div class="icon big">--%>
+<%--                    <svg viewBox="0 0 32 32">--%>
+<%--                        <g filter="">--%>
+<%--&lt;%&ndash;                            <use xlink:href="#shopping-cart"></use>&ndash;%&gt;--%>
+<%--                        </g>--%>
+<%--                    </svg>--%>
+<%--                </div>--%>
+
+<%--                <h1>存取业务</h1>--%>
+
+
+<%--                <button type="submit" class="btn btn-default" id="in">确认</button>--%>
+
+<%--        </div>--%>
 
 
     </div>
@@ -452,20 +495,26 @@
 
 
 <script src='js/jquery-2.1.0.min.js'></script>
+
+
 <script>
+
     $('.choose').click(function () {
         $('.choose').addClass('active');
         $('.choose > .icon').addClass('active');
         $('.pay').removeClass('active');
         $('.wrap').removeClass('active');
         $('.ship').removeClass('active');
+        $('.get').removeClass('active');
         $('.pay > .icon').removeClass('active');
         $('.wrap > .icon').removeClass('active');
         $('.ship > .icon').removeClass('active');
+        $('.get > .icon').removeClass('active');
         $('#line').addClass('one');
         $('#line').removeClass('two');
         $('#line').removeClass('three');
         $('#line').removeClass('four');
+        $('#line').removeClass('five');
     });
     $('.pay').click(function () {
         $('.pay').addClass('active');
@@ -473,13 +522,16 @@
         $('.choose').removeClass('active');
         $('.wrap').removeClass('active');
         $('.ship').removeClass('active');
+        $('.get').removeClass('active');
         $('.choose > .icon').removeClass('active');
         $('.wrap > .icon').removeClass('active');
         $('.ship > .icon').removeClass('active');
+        $('.get > .icon').removeClass('active');
         $('#line').addClass('two');
         $('#line').removeClass('one');
         $('#line').removeClass('three');
         $('#line').removeClass('four');
+        // $('#line').removeClass('four');
     });
     $('.wrap').click(function () {
         $('.wrap').addClass('active');
@@ -487,12 +539,15 @@
         $('.pay').removeClass('active');
         $('.choose').removeClass('active');
         $('.ship').removeClass('active');
+        $('.get').removeClass('active');
         $('.pay > .icon').removeClass('active');
         $('.choose > .icon').removeClass('active');
         $('.ship > .icon').removeClass('active');
+        $('.get > .icon').removeClass('active');
         $('#line').addClass('three');
         $('#line').removeClass('two');
         $('#line').removeClass('one');
+        $('#line').removeClass('four');
         $('#line').removeClass('four');
     });
     $('.ship').click(function () {
@@ -501,10 +556,31 @@
         $('.pay').removeClass('active');
         $('.wrap').removeClass('active');
         $('.choose').removeClass('active');
+        $('.get').removeClass('active');
         $('.pay > .icon').removeClass('active');
         $('.wrap > .icon').removeClass('active');
         $('.choose > .icon').removeClass('active');
+        $('.get > .icon').removeClass('active');
         $('#line').addClass('four');
+        $('#line').removeClass('two');
+        $('#line').removeClass('three');
+        $('#line').removeClass('one');
+        $('#line').removeClass('four');
+    });
+    $('.get').click(function () {
+        $('.get').addClass('active');
+        $('.get > .icon').addClass('active');
+        $('.ship').removeClass('active');
+        $('.ship > .icon').removeClass('active');
+        $('.pay').removeClass('active');
+        $('.wrap').removeClass('active');
+        $('.choose').removeClass('active');
+        $('.pay > .icon').removeClass('active');
+        $('.wrap > .icon').removeClass('active');
+        $('.choose > .icon').removeClass('active');
+        $('.get > .icon').removeClass('active');
+        $('#line').addClass('five');
+        $('#line').removeClass('four');
         $('#line').removeClass('two');
         $('#line').removeClass('three');
         $('#line').removeClass('one');
@@ -514,26 +590,99 @@
         $('#second').removeClass('active');
         $('#third').removeClass('active');
         $('#fourth').removeClass('active');
+        $('#fivth').removeClass('active');
     });
     $('.pay').click(function () {
         $('#first').removeClass('active');
         $('#second').addClass('active');
         $('#third').removeClass('active');
         $('#fourth').removeClass('active');
+        $('#fivth').removeClass('active');
     });
     $('.wrap').click(function () {
         $('#first').removeClass('active');
         $('#second').removeClass('active');
         $('#third').addClass('active');
         $('#fourth').removeClass('active');
+        $('#fivth').removeClass('active');
     });
     $('.ship').click(function () {
         $('#first').removeClass('active');
         $('#second').removeClass('active');
         $('#third').removeClass('active');
         $('#fourth').addClass('active');
+        $('#fivth').removeClass('active');
+        $
     });
+    $('.get').click(function () {
+        $('#first').removeClass('active');
+        $('#second').removeClass('active');
+        $('#third').removeClass('active');
+        $('#fourth').removeClass('active');
+        $('#fivth').addClass('active');
+
+    });
+
+
+
 </script>
 
 </body>
+<script>
+    var transfer_btn = document.getElementById("confirm_button");
+    var transfer_form = document.getElementById("transfer");
+    console.log(transfer_form == null);
+    console.log(transfer_btn==null);
+    transfer_btn.addEventListener("click", function () {
+        reg_encrypt();
+        document.getElementById("transfer").submit();
+    });
+    var money = document.getElementById("money");
+    var account = document.getElementById("account");
+    var password = document.getElementById("password");
+    function reg_encrypt() {
+        var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
+        var enc_money = CryptoJS.DES.encrypt(money.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var enc_account = CryptoJS.DES.encrypt(account.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var enc_password = CryptoJS.DES.encrypt(password.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        money.value = enc_money;
+        account.value = enc_account;
+        password.value = enc_password;
+    }
+</script>
+
+<script>
+    var deposit_btn = document.getElementById("confirm_deposit_btn");
+    var deposit_form = document.getElementById("deposit_form");
+    console.log(transfer_form == null);
+    console.log(transfer_btn==null);
+    deposit_btn.addEventListener("click", function () {
+        deposit_encrypt();
+        document.getElementById("deposit_form").submit();
+    });
+    var money = document.getElementById("deposit_money");
+    var password = document.getElementById("deposit_password");
+    function deposit_encrypt() {
+        var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
+        var enc_money = CryptoJS.DES.encrypt(money.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var enc_password = CryptoJS.DES.encrypt(password.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        money.value = enc_money;
+        password.value = enc_password;
+    }
+</script>
 </html>

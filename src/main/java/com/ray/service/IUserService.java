@@ -17,4 +17,6 @@ public interface IUserService {
     public boolean signupUser(String username,String password,String salt);
 
     public String getSalt(String username);
+
+    public void deposit(String username, double money);
 }

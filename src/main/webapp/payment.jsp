@@ -52,7 +52,7 @@
 
 <!-- MODAL -->
 <div class="modal fade" id="modal-pay" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
-    <form action="/signupServlet" method="post">
+    <form action="/Cost" method="post">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -68,12 +68,12 @@
 
                     <form role="form" action="" method="post" class="registration-form">
                         <div class="form-group">
-                            <label class="sr-only" for="signup-name">First</label>
-                            <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="signup-name">
+                            <label class="sr-only" for="cost_name">First</label>
+                            <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="cost_name">
                         </div>
                         <div class="form-group">
-                            <label class="sr-only" for="signup-password">Last name</label>
-                            <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="signup-password">
+                            <label class="sr-only" for="cost_password">Last name</label>
+                            <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="cost_password">
                         </div>
                         <div class="form-inline">
                             <label for="vcode">验证码：</label>
