@@ -99,5 +99,17 @@ public class UserDao implements IUserDao {
         }
     }
 
+    @Override
+    public void deduction(String username, double money) {
+        try {
+            String sql = "select * from account where username = ? ";
+            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
+            double total = user.getBalance()-money;
+            jdbcTemplate.update("UPDATE account SET balance = ? WHERE username = ?", new Object[] {total, username});
+        }catch (Exception e){
+
+        }
+    }
+
 
 }

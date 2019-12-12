@@ -1,5 +1,6 @@
 package com.ray.web;
 
+import com.ray.crypo.DESUtils;
 import com.ray.crypo.Ende;
 import com.ray.crypo.Key;
 import com.ray.crypo.Sha256;
@@ -41,6 +42,12 @@ public class loginServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        try {
+            username = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
+            password = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         User user = new User();
         user.setUsername(username);
         UserService userService = new UserService();
@@ -50,16 +57,10 @@ public class loginServlet extends HttpServlet {
        // System.out.println("pazsword"+user.getPassword());
         User loginUser = userService.findUser(user);
         if(loginUser!=null){
-            //将用户存入session
-//            double balance = userService.userBalance(user);
-//            loginUser.setBalance(balance);
-//            System.out.println("余额："+balance);
+
             session.setAttribute("user",loginUser);
             List<Detail> details = detailService.allDetails(loginUser.getUsername());
-//            for (Detail detail: details) {
-//                System.out.println(detail.toString());
-//
-//            }
+
             session.setAttribute("details",details);
 //            System.out.println(user.toString());
             response.sendRedirect(request.getContextPath()+"/account.jsp");

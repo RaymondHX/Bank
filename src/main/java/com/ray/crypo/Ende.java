@@ -59,9 +59,9 @@ public class Ende {
      *
      * @param publicKey
      *            公钥
-     * @param plainTextData
+     * @param plainTextData UTF-8编码明文
      *            明文数据
-     * @return
+     * @return Base64编码密文
      * @throws Exception
      *             加密过程中的异常信息
      */
@@ -97,9 +97,9 @@ public class Ende {
      *
      * @param privateKey
      *            私钥
-     * @param plainTextData
+     * @param plainTextData UTF-8编码明文
      *            明文数据
-     * @return
+     * @return Base64编码密文
      * @throws Exception
      *             加密过程中的异常信息
      */
@@ -134,9 +134,9 @@ public class Ende {
      *
      * @param privateKey
      *            私钥
-     * @param cipherData
+     * @param cipherData Base64编码密文
      *            密文数据
-     * @return 明文
+     * @return 明文 UTF-8编码明文
      * @throws Exception
      *             解密过程中的异常信息
      */
@@ -172,9 +172,9 @@ public class Ende {
      *
      * @param publicKey
      *            公钥
-     * @param cipherData
+     * @param cipherData Base64编码密文
      *            密文数据
-     * @return 明文
+     * @return 明文 UTF-8编码明文
      * @throws Exception
      *             解密过程中的异常信息
      */
@@ -208,10 +208,33 @@ public class Ende {
         Key key = new Key();
         RSAPublicKey publicKey = loadPublicKeyByStr(key.getPublicKey());
         RSAPrivateKey privateKey = loadPrivateKeyByStr(key.getPrivateKey());
-        String plain = "hhh";
-        byte[] plaintext = plain.getBytes("UTF-8");
-        byte[] new_plain = decrypt(privateKey,encrypt(publicKey,plaintext));
-        System.out.println(new String(new_plain,"UTF-8"));
+//        String plain = "hhh";
+//        byte[] plaintext = plain.getBytes("UTF-8");
+//        byte[] new_plain = decrypt(privateKey,encrypt(publicKey,plaintext));
+//        System.out.println(new String(new_plain,"UTF-8"));
+        String s = "1234.0";
+        byte[] bytes = s.getBytes("utf-8");
+//        for (int i=0 ; i< bytes.length; i++) {
+//            System.out.println(bytes[i]);
+//        }
+//        byte[] sb = Base64.getDecoder().decode(s);
+        byte[] csb = encrypt(publicKey,bytes);
+        for (int i = 0; i <csb.length ; i++) {
+            System.out.print(csb[i]);
+        }
+        String chuanshu = Base64.getEncoder().encodeToString(csb);
+        System.out.println();
+        byte[] jigp = Base64.getDecoder().decode(chuanshu);
+        for (int i = 0; i < jigp.length; i++) {
+            System.out.print(jigp[i]);
+        }
+//        String chuanshu = Base64.getEncoder().encodeToString(csb);
+//        byte[] sjoudao = Base64.getDecoder().decode(chuanshu);
+//        byte[] plaint = decrypt(privateKey,sjoudao);
+//        String result = Base64.getEncoder().encodeToString(plaint);
+//        System.out.println(result);
+
+
     }
 
 }

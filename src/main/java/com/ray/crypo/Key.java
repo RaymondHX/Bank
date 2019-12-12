@@ -60,7 +60,7 @@ public class Key {
      */
     public static String loadPrivateKeyByFile() throws Exception {
         try {
-            BufferedReader br = new BufferedReader(new FileReader( "E:\\mobanTest\\target\\mobanTest\\sk.key"));
+            BufferedReader br = new BufferedReader(new FileReader( "E:\\mobanTest\\target\\mobanTest\\skmy.key"));
             String readLine = null;
             StringBuilder sb = new StringBuilder();
             while ((readLine = br.readLine()) != null) {

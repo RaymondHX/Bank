@@ -19,4 +19,6 @@ public interface IUserService {
     public String getSalt(String username);
 
     public void deposit(String username, double money);
+
+    public void deduction(String username, double money);
 }

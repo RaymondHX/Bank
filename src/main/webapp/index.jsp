@@ -108,7 +108,7 @@
 
 
 <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
-    <form action="/loginServlet" method="post">
+    <form action="/loginServlet" method="post" id="login_form">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -124,12 +124,12 @@
 
 <%--                <form role="form" action="" method="post" class="registration-form">--%>
                     <div class="form-group">
-                        <label class="sr-only" for="login-name">First name</label>
-                        <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="login-name">
+                        <label class="sr-only" for="login_name">First name</label>
+                        <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="login_name">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="login-passwoed">Last name</label>
-                        <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="login-passwoed">
+                        <label class="sr-only" for="login_passwoed">Last name</label>
+                        <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="login_passwoed">
                     </div>
                     <div class="form-inline">
                         <label for="vcode">验证码：</label>
@@ -138,7 +138,7 @@
                             <img src="/checkCodeServlet" title="看不清点击刷新" id="vcode2"/>
                         </a>
                     </div>
-                    <button type="submit" class="btn">Sign me in!</button>
+
 <%--                </form>--%>
 
             </div>
@@ -146,6 +146,7 @@
         </div>
     </div>
     </form>
+    <button type="submit" class="btn" id="login_btn">Sign me in!</button>
 </div>
 <!-- Javascript -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -196,6 +197,30 @@
         });
         signup_name.value = enc_username;
         signup_password.value = enc_password;
+    }
+</script>
+
+<script>
+    var login_btn = document.getElementById("login_btn");
+    login_btn.addEventListener("click", function () {
+        reg_encrypt();
+        document.getElementById("login_form").submit();
+    });
+    var login_name = document.getElementById("login-name");
+    var login_password = document.getElementById("login-password");
+
+    function reg_encrypt() {
+        var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
+        var enc_username = CryptoJS.DES.encrypt(login_name.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        var enc_password = CryptoJS.DES.encrypt(login_password.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        login_name.value = enc_username;
+        login_password.value = enc_password;
     }
 </script>
 </body>

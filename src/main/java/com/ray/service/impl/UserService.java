@@ -39,5 +39,10 @@ public class UserService implements IUserService {
         userDao.deposit(username,money);
     }
 
+    @Override
+    public void deduction(String username, double money) {
+        userDao.deduction(username,money);
+    }
+
 
 }
