@@ -1,11 +1,29 @@
 package com.ray.domain;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 public class Detail {
+
 
 
     private String username;
     private int in;
     private int out;
+    private Timestamp timestamp;
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+
+
+
+
     public String getUsername() {
         return username;
     }
@@ -36,6 +54,7 @@ public class Detail {
                 "username='" + username + '\'' +
                 ", in=" + in +
                 ", out=" + out +
+                ", timestamp=" + timestamp +
                 '}';
     }
 

@@ -301,7 +301,10 @@
 </svg>
 <!-- ICONS -->
 
-
+<div>
+    <h1 style="text-align: center; margin-top: 20px; font-family: 微软雅黑; font-size: 60px; color: #000;">哥谭市中心银行</h1>
+    <h1 style="text-align: center;font-size: 20px">尊敬的用户${user.username}欢迎您</h1>
+</div>
 <div id="wrapper">
     <div id="left-side">
         <ul>
@@ -315,7 +318,7 @@
                         </g>
                     </svg>
                 </div>
-                首页
+                查询明细
             </li>
 
 
@@ -377,12 +380,22 @@
             <div class="icon big">
                 <svg viewBox="0 0 32 32">
                     <g filter="">
-                        <use xlink:href="#shopping-cart"></use>
+<%--                        <use xlink:href="#shopping-cart"></use>--%>
                     </g>
                 </svg>
             </div>
 
-            <h1>${user.username},欢迎您</h1>
+            <h1>选择查询的时间区间</h1>
+            <form id="time" action="/listServlet" method="post" >
+<%--            <div class="form-group2">--%>
+                <label for="money">时间起始</label>
+                <input type="text" name="begin" class="form-control" id="begin">
+                <label for="money">时间终止</label>
+                <input type="text" name="end" class="form-control" id="end">
+
+                <button type="submit" class="btn btn-default" id="confirm_time">确认</button>
+            </form>
+<%--            </div>--%>
         </div>
 
 
@@ -390,7 +403,7 @@
             <div class="icon big">
                 <svg viewBox="0 0 32 32">
                     <g filter="">
-                        <use xlink:href="#credit-card"></use>
+<%--                        <use xlink:href="#credit-card"></use>--%>
                     </g>
                 </svg>
             </div>
@@ -405,7 +418,7 @@
             <div class="icon big">
                 <svg viewBox="0 0 32 32">
                     <g filter="">
-                        <use xlink:href="#gift"></use>
+<%--                        <use xlink:href="#gift"></use>--%>
                     </g>
                 </svg>
             </div>
@@ -447,7 +460,7 @@
                 <div class="icon big">
                     <svg viewBox="0 0 32 32">
                         <g filter="">
-                            <use xlink:href="#package"></use>
+<%--                            <use xlink:href="#package"></use>--%>
                         </g>
                     </svg>
                 </div>
@@ -470,24 +483,6 @@
             </form>
             <button  class="btn btn-default" id="confirm_button">确认</button>
         </div>
-
-
-<%--        <div id="fivth">--%>
-
-<%--                <div class="icon big">--%>
-<%--                    <svg viewBox="0 0 32 32">--%>
-<%--                        <g filter="">--%>
-<%--&lt;%&ndash;                            <use xlink:href="#shopping-cart"></use>&ndash;%&gt;--%>
-<%--                        </g>--%>
-<%--                    </svg>--%>
-<%--                </div>--%>
-
-<%--                <h1>存取业务</h1>--%>
-
-
-<%--                <button type="submit" class="btn btn-default" id="in">确认</button>--%>
-
-<%--        </div>--%>
 
 
     </div>

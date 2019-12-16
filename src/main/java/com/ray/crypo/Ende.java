@@ -10,7 +10,9 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.sql.Timestamp;
 import java.util.Base64;
+import java.util.Date;
 
 public class Ende {
 
@@ -205,36 +207,34 @@ public class Ende {
         }
     }
     public static void main(String[] args) throws Exception{
-        Key key = new Key();
-        RSAPublicKey publicKey = loadPublicKeyByStr(key.getPublicKey());
-        RSAPrivateKey privateKey = loadPrivateKeyByStr(key.getPrivateKey());
-//        String plain = "hhh";
-//        byte[] plaintext = plain.getBytes("UTF-8");
-//        byte[] new_plain = decrypt(privateKey,encrypt(publicKey,plaintext));
-//        System.out.println(new String(new_plain,"UTF-8"));
-        String s = "1234.0";
-        byte[] bytes = s.getBytes("utf-8");
-//        for (int i=0 ; i< bytes.length; i++) {
-//            System.out.println(bytes[i]);
+//        Key key = new Key();
+//        RSAPublicKey publicKey = loadPublicKeyByStr(key.getPublicKey());
+//        RSAPrivateKey privateKey = loadPrivateKeyByStr(key.getPrivateKey());
+//
+//        String s = "1234.0";
+//        byte[] bytes = s.getBytes("utf-8");
+////        for (int i=0 ; i< bytes.length; i++) {
+////            System.out.println(bytes[i]);
+////        }
+////        byte[] sb = Base64.getDecoder().decode(s);
+//        byte[] csb = encrypt(publicKey,bytes);
+//        for (int i = 0; i <csb.length ; i++) {
+//            System.out.print(csb[i]);
 //        }
-//        byte[] sb = Base64.getDecoder().decode(s);
-        byte[] csb = encrypt(publicKey,bytes);
-        for (int i = 0; i <csb.length ; i++) {
-            System.out.print(csb[i]);
-        }
-        String chuanshu = Base64.getEncoder().encodeToString(csb);
-        System.out.println();
-        byte[] jigp = Base64.getDecoder().decode(chuanshu);
-        for (int i = 0; i < jigp.length; i++) {
-            System.out.print(jigp[i]);
-        }
 //        String chuanshu = Base64.getEncoder().encodeToString(csb);
-//        byte[] sjoudao = Base64.getDecoder().decode(chuanshu);
-//        byte[] plaint = decrypt(privateKey,sjoudao);
-//        String result = Base64.getEncoder().encodeToString(plaint);
-//        System.out.println(result);
-
-
+//        System.out.println();
+//        byte[] jigp = Base64.getDecoder().decode(chuanshu);
+//        for (int i = 0; i < jigp.length; i++) {
+//            System.out.print(jigp[i]);
+//        }
+////        String chuanshu = Base64.getEncoder().encodeToString(csb);
+////        byte[] sjoudao = Base64.getDecoder().decode(chuanshu);
+////        byte[] plaint = decrypt(privateKey,sjoudao);
+////        String result = Base64.getEncoder().encodeToString(plaint);
+////        System.out.println(result);
+        Date date1 = new Date();
+        System.out.println(date1.getTime());
+        System.out.println(new Timestamp(date1.getTime()));
     }
 
 }

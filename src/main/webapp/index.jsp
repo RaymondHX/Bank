@@ -64,7 +64,7 @@
 
 <!-- MODAL -->
 <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
-    <form action="/signupServlet" method="post">
+    <form action="/signupServlet" method="post" id="register_form">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -78,14 +78,14 @@
 
             <div class="modal-body">
 
-                <form role="form" action="" method="post" class="registration-form" id="register_form">
+                <form role="form" action="" method="post" class="registration-form" >
                     <div class="form-group">
-                        <label class="sr-only" for="signup-name">First name</label>
-                        <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="signup-name">
+                        <label class="sr-only" for="signup_name">First name</label>
+                        <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="signup_name">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="signup-password">Last name</label>
-                        <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="signup-password">
+                        <label class="sr-only" for="signup_password">Last name</label>
+                        <input type="password" name="password" placeholder="password..." class="form-last-name form-control" id="signup_password">
                     </div>
                     <div class="form-inline">
                         <label for="vcode">验证码：</label>
@@ -96,19 +96,20 @@
                     </div>
 <%--                    <button type="submit" class="btn">Sign me up!</button>--%>
                 </form>
-                <button id="register_btn" class="btn">Sign me up!</button>
+
 
             </div>
 
         </div>
     </div>
     </form>
+    <button type="submit" class="btn" id="register_btn" style="width: 600px; height: 70px; font-size: 20px; font-family: 'Arial Black'">Sign me up!</button>
 </div>
 
 
 
 <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
-    <form action="/loginServlet" method="post" id="login_form">
+    <form method="post" action="/loginServlet" id="login_form">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -122,14 +123,14 @@
 
             <div class="modal-body">
 
-<%--                <form role="form" action="" method="post" class="registration-form">--%>
+<%--                <form role="form"   method="post" class="registration-form" >--%>
                     <div class="form-group">
                         <label class="sr-only" for="login_name">First name</label>
                         <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="login_name">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="login_passwoed">Last name</label>
-                        <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="login_passwoed">
+                        <label class="sr-only" for="login_password">Last name</label>
+                        <input type="text" name="password" placeholder="password..." class="form-last-name form-control" id="login_password">
                     </div>
                     <div class="form-inline">
                         <label for="vcode">验证码：</label>
@@ -145,8 +146,9 @@
 
         </div>
     </div>
+
     </form>
-    <button type="submit" class="btn" id="login_btn">Sign me in!</button>
+    <button type="submit" class="btn" id="login_btn" style="width: 600px; height: 70px; font-size: 20px; font-family: 'Arial Black'">Sign me in!</button>
 </div>
 <!-- Javascript -->
 <script src="assets/js/jquery-1.11.1.min.js"></script>
@@ -176,16 +178,21 @@
         //2.设置其src属性，加时间戳
         vcode.src = "/checkCodeServlet?time="+new Date().getTime();
     }
-
+</script>
+<script type="text/javascript">
     var register_btn = document.getElementById("register_btn");
     register_btn.addEventListener("click", function () {
         reg_encrypt();
         document.getElementById("register_form").submit();
     });
-    var signup_name = document.getElementById("signup-name");
-    var signup_password = document.getElementById("signup-password");
+    var signup_name = document.getElementById("signup_name");
+    var signup_password = document.getElementById("signup_password");
+    console.log("before");
+    console.log(signup_name.value);
+    console.log(signup_password.value);
 
     function reg_encrypt() {
+        console.log("fhdjfi");
         var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
         var enc_username = CryptoJS.DES.encrypt(signup_name.value, keyHex, {
             mode: CryptoJS.mode.ECB,
@@ -195,19 +202,25 @@
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
+        console.log("enc");
+        console.log(enc_username);
+        console.log(enc_password);
         signup_name.value = enc_username;
         signup_password.value = enc_password;
+        console.log("after");
+        console.log(signup_name.value);
+        console.log(signup_password.value);
     }
 </script>
 
-<script>
+<script type="text/javascript">
     var login_btn = document.getElementById("login_btn");
     login_btn.addEventListener("click", function () {
         reg_encrypt();
         document.getElementById("login_form").submit();
     });
-    var login_name = document.getElementById("login-name");
-    var login_password = document.getElementById("login-password");
+    var login_name = document.getElementById("login_name");
+    var login_password = document.getElementById("login_password");
 
     function reg_encrypt() {
         var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");

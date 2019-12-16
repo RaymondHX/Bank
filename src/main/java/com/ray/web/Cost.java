@@ -44,7 +44,10 @@ public class Cost extends HttpServlet {
         System.out.println(password);
         double money = Double.parseDouble((String) session.getAttribute("money"));
         System.out.println(money);
+
         UserService userService = new UserService();
+        String salt = userService.getSalt(username);
+        password = Sha256.getSHA256(password+salt);
         User loginUser = new User();
         loginUser.setPassword(password);
         loginUser.setUsername(username);

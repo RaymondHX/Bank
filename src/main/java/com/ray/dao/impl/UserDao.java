@@ -16,9 +16,12 @@ public class UserDao implements IUserDao {
     public User findUser(String username, String password) {
         try {
             String sql = "select * from account where username = ? and password = ?  ";
-            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username, password);
-//            System.out.println("查询后的结果："+user.toString());
-            return user;
+            List<User> users = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class), username, password);
+//            System.out.println("查询后的结果："+user.toString());'
+            if(users.size()==0)
+                return null;
+            else
+                return users.get(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -61,6 +64,10 @@ public class UserDao implements IUserDao {
     @Override
     public boolean signupUser(String username, String password,String salt) {
         try{
+//            String sql = "select * from account where username = ? ";
+//            User user = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), username);
+//            if(user!=null)
+//                return false;
             String sql = "insert into account values (?,?,?,?)";
             int result = jdbcTemplate.update(sql,username,password,0,salt);
             if(result==1)

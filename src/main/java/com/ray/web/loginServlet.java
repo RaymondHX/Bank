@@ -42,9 +42,11 @@ public class loginServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        System.out.println(username);
+        System.out.println(password);
         try {
             username = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
-            password = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
+            password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
         } catch (Exception e) {
             e.printStackTrace();
         }

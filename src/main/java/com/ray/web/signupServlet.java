@@ -38,26 +38,25 @@ public class signupServlet extends HttpServlet {
         System.out.println(username);
         try {
             username =DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
-            System.out.println(username);
+           // System.out.println(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
         String pass = request.getParameter("password");
-        System.out.println(pass);
+       // System.out.println(pass);
         try {
             pass = DESUtils.decryption(pass,"6y8SwEs8Fu8YXwvq");
             System.out.println(pass);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //利用强伪随机给密码加盐
+        //利用强伪随机生成器给密码加盐
         try {
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             byte bytes[] = new byte[32];
             random.nextBytes(bytes);
             String salt = new String(bytes);
             String hash = Sha256.getSHA256(pass+salt);
-            System.out.println("salt"+salt);
             User user = new User();
             user.setPassword(hash);
             user.setUsername(username);
@@ -65,8 +64,11 @@ public class signupServlet extends HttpServlet {
             boolean result = service.signupUser(username,hash,salt);
             if (result){
                 session.setAttribute("user",user);
-//            System.out.println(user.toString());
                 response.sendRedirect(request.getContextPath()+"/account.jsp");
+            }
+            else {
+                request.setAttribute("login_msg","该用户已存在");
+                request.getRequestDispatcher("/index.jsp").forward(request,response);
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
