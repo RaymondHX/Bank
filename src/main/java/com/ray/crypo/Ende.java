@@ -1,5 +1,7 @@
 package com.ray.crypo;
 
+import com.ray.service.impl.DetailService;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -233,8 +235,11 @@ public class Ende {
 ////        String result = Base64.getEncoder().encodeToString(plaint);
 ////        System.out.println(result);
         Date date1 = new Date();
-        System.out.println(date1.getTime());
-        System.out.println(new Timestamp(date1.getTime()));
+        //System.out.println(date1.getTime());
+        System.out.println(new Timestamp(date1.getTime()).toString());
+        ;
+        System.out.println(new DetailService().allDetails("hx").get(0).getTime());
+        System.out.println(new DetailService().allDetails("hx").get(0).toString());
     }
 
 }

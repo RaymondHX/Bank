@@ -18,10 +18,10 @@ public class DetailDao implements IDetailDao {
     public void addInfo(String username, double in, double out) {
         Date date = new Date();
         Timestamp timeStamp = new Timestamp(date.getTime());
-
+        String time = timeStamp.toString();
         try{
             String sql = "insert into detail values (?,?,?,?)";
-            int result = jdbcTemplate.update(sql,username,timeStamp,in,out);
+            int result = jdbcTemplate.update(sql,username,time,in,out);
         }catch (Exception e){
             e.printStackTrace();
         }

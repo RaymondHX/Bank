@@ -21,7 +21,14 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
-
+    <script>
+        var msg = "<%=request.getAttribute("msg")%>";
+        console.log(msg==null);
+        if (msg != null && msg != ""&&msg!="null") {
+            console.log("hhh");
+            alert(msg);
+        }
+    </script>
 
 </head>
 
@@ -48,13 +55,13 @@
                     <div class="top-big-link">
                         <a class="btn btn-link-1 launch-modal" href="#" data-modal-id="modal-register">注册</a>
                     </div>
-                    <!-- 出错显示的信息框 -->
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" >
-                            <span>&times;</span>
-                        </button>
-                        <strong>${login_msg}</strong>
-                    </div>
+<%--                    <!-- 出错显示的信息框 -->--%>
+<%--                    <div class="alert alert-warning alert-dismissible" role="alert">--%>
+<%--                        <button type="button" class="close" data-dismiss="alert" >--%>
+<%--                            <span>&times;</span>--%>
+<%--                        </button>--%>
+<%--                        <strong>${login_msg}</strong>--%>
+<%--                    </div>--%>
                 </div>
             </div>
         </div>
@@ -85,8 +92,20 @@
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="signup_password">Last name</label>
-                        <input type="password" name="password" placeholder="password..." class="form-last-name form-control" id="signup_password">
+                        <input type="password" name="password" onKeyUp="CheckIntensity(this.value)" placeholder="password..." class="form-last-name form-control" id="signup_password">
                     </div>
+                    <div>
+                        <label>密码强度</label>
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr align="center">
+                                <td id="pwd_Weak" class="pwd pwd_c"> </td>
+                                <td id="pwd_Medium" class="pwd pwd_c pwd_f">无</td>
+                                <td id="pwd_Strong" class="pwd pwd_c pwd_c_r"> </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
                     <div class="form-inline">
                         <label for="vcode">验证码：</label>
                         <input type="text" name="verifycode" class="form-control" id="verifycode" placeholder="请输入验证码" style="width: 120px;"/>
@@ -216,13 +235,13 @@
 <script type="text/javascript">
     var login_btn = document.getElementById("login_btn");
     login_btn.addEventListener("click", function () {
-        reg_encrypt();
+        log_encrypt();
         document.getElementById("login_form").submit();
     });
     var login_name = document.getElementById("login_name");
     var login_password = document.getElementById("login_password");
 
-    function reg_encrypt() {
+    function log_encrypt() {
         var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
         var enc_username = CryptoJS.DES.encrypt(login_name.value, keyHex, {
             mode: CryptoJS.mode.ECB,
@@ -234,6 +253,58 @@
         });
         login_name.value = enc_username;
         login_password.value = enc_password;
+    }
+</script>
+<script>
+    function CheckIntensity(pwd) {
+        var Mcolor, Wcolor, Scolor, Color_Html;
+        var m = 0;
+        //匹配数字
+        if (/\d+/.test(pwd)) {
+            debugger;
+            m++;
+        };
+        //匹配字母
+        if (/[A-Za-z]+/.test(pwd)) {
+            m++;
+        };
+        //匹配除数字字母外的特殊符号
+        if (/[^0-9a-zA-Z]+/.test(pwd)) {
+            m++;
+        };
+
+        if (pwd.length <= 6) { m = 1; }
+        if (pwd.length <= 0) { m = 0; }
+        switch (m) {
+            case 1:
+                Wcolor = "pwd pwd_Weak_c";
+                Mcolor = "pwd pwd_c";
+                Scolor = "pwd pwd_c pwd_c_r";
+                Color_Html = "弱";
+                break;
+            case 2:
+                Wcolor = "pwd pwd_Medium_c";
+                Mcolor = "pwd pwd_Medium_c";
+                Scolor = "pwd pwd_c pwd_c_r";
+                Color_Html = "中";
+                break;
+            case 3:
+                Wcolor = "pwd pwd_Strong_c";
+                Mcolor = "pwd pwd_Strong_c";
+                Scolor = "pwd pwd_Strong_c pwd_Strong_c_r";
+                Color_Html = "强";
+                break;
+            default:
+                Wcolor = "pwd pwd_c";
+                Mcolor = "pwd pwd_c pwd_f";
+                Scolor = "pwd pwd_c pwd_c_r";
+                Color_Html = "无";
+                break;
+        }
+        document.getElementById('pwd_Weak').className = Wcolor;
+        document.getElementById('pwd_Medium').className = Mcolor;
+        document.getElementById('pwd_Strong').className = Scolor;
+        document.getElementById('pwd_Medium').innerHTML = Color_Html;
     }
 </script>
 </body>

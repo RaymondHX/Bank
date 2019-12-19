@@ -4,6 +4,7 @@ import com.ray.crypo.DESUtils;
 import com.ray.crypo.Sha256;
 import com.ray.domain.User;
 import com.ray.service.IUserService;
+import com.ray.service.impl.DetailService;
 import com.ray.service.impl.UserService;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,8 @@ import java.io.IOException;
 
 @WebServlet("/deposit")
 public class depositServlet extends HttpServlet {
+    UserService userService = new UserService();
+    DetailService detailService = new DetailService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.设置编码
         request.setCharacterEncoding("UTF-8");
@@ -24,12 +27,11 @@ public class depositServlet extends HttpServlet {
         try {
             password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
             money = DESUtils.decryption(money,"6y8SwEs8Fu8YXwvq");
-            System.out.println(money);
         } catch (Exception e) {
             e.printStackTrace();
         }
         double money1 = Double.parseDouble(money);
-        UserService userService = new UserService();
+
         HttpSession session = request.getSession();
         User user =(User) session.getAttribute("user");
         String salt = userService.getSalt(user.getUsername());
@@ -37,15 +39,18 @@ public class depositServlet extends HttpServlet {
         User depositUser = new User();
         depositUser.setUsername(user.getUsername());
         depositUser.setPassword(password);
-        User findUser = userService.findUser(user);
+        User findUser = userService.findUser(depositUser);
         if(findUser!=null){
             userService.deposit(user.getUsername(),money1);
+            detailService.addInfo(user.getUsername(),money1,0);
             session.setAttribute("user",user);
+            request.setAttribute("msg","存款成功");
             request.getRequestDispatcher("/account.jsp").forward(request,response);
 
         }
         else {
-
+            request.setAttribute("msg","密码错误");
+            request.getRequestDispatcher("/index.jsp").forward(request,response);
         }
     }
 

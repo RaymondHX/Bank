@@ -15,9 +15,22 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet("/signupServlet")
 public class signupServlet extends HttpServlet {
+    public boolean HasDigitAndCharacter(String content) {
+        boolean flag = false;
+        Pattern p = Pattern.compile("^(?=.[0-9])(?=.[a-zA-Z])([a-zA-Z0-9]{6,20})$");
+        Matcher m = p.matcher(content);
+        if (m.matches()) {
+            flag = true;
+        }
+        return flag;
+    }
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         DESUtils desUtils = new DESUtils();
@@ -35,7 +48,7 @@ public class signupServlet extends HttpServlet {
         }
 
         String username = request.getParameter("username");
-        System.out.println(username);
+        //System.out.println(username);
         try {
             username =DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
            // System.out.println(username);
@@ -50,29 +63,36 @@ public class signupServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //利用强伪随机生成器给密码加盐
-        try {
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            byte bytes[] = new byte[32];
-            random.nextBytes(bytes);
-            String salt = new String(bytes);
-            String hash = Sha256.getSHA256(pass+salt);
-            User user = new User();
-            user.setPassword(hash);
-            user.setUsername(username);
-            IUserService service = new UserService();
-            boolean result = service.signupUser(username,hash,salt);
-            if (result){
-                session.setAttribute("user",user);
-                response.sendRedirect(request.getContextPath()+"/account.jsp");
+        if(HasDigitAndCharacter(pass)&&pass.length()>6){
+            //利用强伪随机生成器给密码加盐
+            try {
+                SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+                byte bytes[] = new byte[32];
+                random.nextBytes(bytes);
+                String salt = new String(bytes);
+                String hash = Sha256.getSHA256(pass+salt);
+                User user = new User();
+                user.setPassword(hash);
+                user.setUsername(username);
+                IUserService service = new UserService();
+                boolean result = service.signupUser(username,hash,salt);
+                if (result){
+                    session.setAttribute("user",user);
+                    response.sendRedirect(request.getContextPath()+"/account.jsp");
+                }
+                else {
+                    request.setAttribute("msg","该用户已存在");
+                    request.getRequestDispatcher("/index.jsp").forward(request,response);
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
-            else {
-                request.setAttribute("login_msg","该用户已存在");
-                request.getRequestDispatcher("/index.jsp").forward(request,response);
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
+        else {
+            request.setAttribute("msg","密码强度不够");
+            request.getRequestDispatcher("/index.jsp").forward(request,response);
+        }
+
 
 
 

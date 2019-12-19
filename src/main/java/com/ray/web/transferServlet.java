@@ -21,6 +21,7 @@ import java.util.List;
 @WebServlet("/transferServlet")
 public class transferServlet extends HttpServlet {
     private DetailService detailService = new DetailService();
+    UserService userService = new UserService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.设置编码
         request.setCharacterEncoding("UTF-8");
@@ -31,20 +32,29 @@ public class transferServlet extends HttpServlet {
             password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
             to = DESUtils.decryption(to,"6y8SwEs8Fu8YXwvq");
             money = DESUtils.decryption(money,"6y8SwEs8Fu8YXwvq");
-            System.out.println(money);
         } catch (Exception e) {
             e.printStackTrace();
         }
         double money1 = Double.parseDouble(money);
-        UserService userService = new UserService();
         HttpSession session = request.getSession();
         User user =(User) session.getAttribute("user");
         String salt = userService.getSalt(user.getUsername());
         password = Sha256.getSHA256(password+salt);
-        userService.transfer(user.getUsername(),to,money1);
-        detailService.addInfo(user.getUsername(),0,money1);
-        detailService.addInfo(to,money1,0);
-        request.getRequestDispatcher("/account.jsp").forward(request,response);
+        User findUser = new User();
+        findUser.setPassword(password);
+        findUser.setUsername(user.getUsername());
+        if(userService.findUser(findUser)!=null){
+            userService.transfer(user.getUsername(),to,money1);
+            detailService.addInfo(user.getUsername(),0,money1);
+            detailService.addInfo(to,money1,0);
+            request.setAttribute("msg","转账成功");
+            request.getRequestDispatcher("/account.jsp").forward(request,response);
+        }
+        else {
+            request.setAttribute("msg","密码错误");
+            request.getRequestDispatcher("/account.jsp").forward(request,response);
+        }
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

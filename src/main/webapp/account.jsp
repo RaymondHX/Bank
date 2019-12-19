@@ -20,16 +20,12 @@
     <script src="js/jquery-2.1.0.min.js"></script>
     <!-- 3. 导入bootstrap的js文件 -->
     <script src="js/bootstrap.min.js"></script>
-    <%--    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">--%>
-    <%--    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">--%>
-    <%--    <link rel="stylesheet" href="assets/css/form-elements.css">--%>
-    <%--    <link rel="stylesheet" href="assets/css/style.css">--%>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-
-    <!--	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
-    <!--	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+    <script>
+        var msg = "<%=request.getAttribute("msg")%>";
+        if (msg != null && msg != ""&&msg!="null") {
+            alert(msg);
+        }
+    </script>
 
 
     <style type="text/css">
@@ -388,9 +384,9 @@
             <h1>选择查询的时间区间</h1>
             <form id="time" action="/listServlet" method="post" >
 <%--            <div class="form-group2">--%>
-                <label for="money">时间起始</label>
+                <label for="begin">时间起始</label>
                 <input type="text" name="begin" class="form-control" id="begin">
-                <label for="money">时间终止</label>
+                <label for="end">时间终止</label>
                 <input type="text" name="end" class="form-control" id="end">
 
                 <button type="submit" class="btn btn-default" id="confirm_time">确认</button>
@@ -424,35 +420,16 @@
             </div>
                             <h1>存取业务</h1>
             <div class="form-group2">
-                <label for="money">存入金额</label>
+                <label for="deposit_money">存入金额</label>
                 <input type="text" name="money" class="form-control" id="deposit_money">
             </div>
             <div class="form-group3">
-                <label for="password">密码</label>
-                <input type="text" name="password" class="form-control" id="deposit_password">
+                <label for="deposit_password">密码</label>
+                <input type="password" name="password" class="form-control" id="deposit_password">
             </div>
             </form>
             <button type="submit" class="btn btn-default" id="confirm_deposit_btn">确认</button>
-<%--            <h1>明细</h1>--%>
 
-<%--            <table border="1" class="table table-bordered table-hover">--%>
-<%--                <tr class="success">--%>
-<%--                    <th>用户</th>--%>
-<%--                    <th>时间</th>--%>
-<%--                    <th>转入</th>--%>
-<%--                    <th>转出</th>--%>
-<%--                </tr>--%>
-<%--                <c:forEach items="${details}" var="detail" varStatus="s">--%>
-<%--                    <tr>--%>
-<%--                        <td>${detail.username}</td>--%>
-<%--                        <td>${detail.date}</td>--%>
-<%--                        <td>${detail.in}</td>--%>
-<%--                        <td>${detail.out}</td>--%>
-<%--                    </tr>--%>
-<%--                </c:forEach>--%>
-
-
-<%--            </table>--%>
 
         </div>
         <div id="fourth">
@@ -468,20 +445,20 @@
                 <h1>转账</h1>
 
                 <div class="form-group1">
-                    <label for="account">转入账户</label>
-                    <input type="text" name="account" class="form-control" id="account">
+                    <label for="transfer_account">转入账户</label>
+                    <input type="text" name="account" class="form-control" id="transfer_account">
                 </div>
                 <div class="form-group2">
-                    <label for="money">转入金额</label>
-                    <input type="text" name="money" class="form-control" id="money">
+                    <label for="transfer_money">转入金额</label>
+                    <input type="text" name="money" class="form-control" id="transfer_money">
                 </div>
                 <div class="form-group3">
-                    <label for="password">密码</label>
-                    <input type="text" name="password" class="form-control" id="password">
+                    <label for="transfer_password">密码</label>
+                    <input type="password" name="password" class="form-control" id="transfer_password">
                 </div>
 
             </form>
-            <button  class="btn btn-default" id="confirm_button">确认</button>
+            <button  type="submit" class="btn btn-default" id="confirm_transfer_button">确认</button>
         </div>
 
 
@@ -624,60 +601,72 @@
 
 </body>
 <script>
-    var transfer_btn = document.getElementById("confirm_button");
+    var transfer_btn = document.getElementById("confirm_transfer_button");
     var transfer_form = document.getElementById("transfer");
-    console.log(transfer_form == null);
-    console.log(transfer_btn==null);
+    // console.log(transfer_form == null);
+    // console.log(transfer_btn==null);
     transfer_btn.addEventListener("click", function () {
-        reg_encrypt();
+        transfer_encrypt();
         document.getElementById("transfer").submit();
     });
-    var money = document.getElementById("money");
-    var account = document.getElementById("account");
-    var password = document.getElementById("password");
-    function reg_encrypt() {
+    var transfer_money = document.getElementById("transfer_money");
+    var transfer_account = document.getElementById("transfer_account");
+    var transfer_password = document.getElementById("transfer_password");
+    console.log(transfer_money);
+    console.log(transfer_account);
+    console.log(transfer_password);
+    function transfer_encrypt() {
+        console.log("fhksjdfh00");
         var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
-        var enc_money = CryptoJS.DES.encrypt(money.value, keyHex, {
+        var enc_money = CryptoJS.DES.encrypt(transfer_money.value, keyHex, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
-        var enc_account = CryptoJS.DES.encrypt(account.value, keyHex, {
+        console.log("hjkhkj");
+        var enc_account = CryptoJS.DES.encrypt(transfer_account.value, keyHex, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
-        var enc_password = CryptoJS.DES.encrypt(password.value, keyHex, {
+        console.log("sfdhkjfh");
+        var enc_password = CryptoJS.DES.encrypt(transfer_password.value, keyHex, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
-        money.value = enc_money;
-        account.value = enc_account;
-        password.value = enc_password;
+        console.log(enc_money);
+        console.log(enc_password);
+        console.log(enc_password);
+        transfer_money.value = enc_money;
+        transfer_account.value = enc_account;
+        transfer_password.value = enc_password;
+        console.log(transfer_money);
+        console.log(transfer_account);
+        console.log(transfer_password);
     }
 </script>
 
 <script>
     var deposit_btn = document.getElementById("confirm_deposit_btn");
     var deposit_form = document.getElementById("deposit_form");
-    console.log(transfer_form == null);
-    console.log(transfer_btn==null);
+    // console.log(transfer_form == null);
+    // console.log(transfer_btn==null);
     deposit_btn.addEventListener("click", function () {
         deposit_encrypt();
         document.getElementById("deposit_form").submit();
     });
-    var money = document.getElementById("deposit_money");
-    var password = document.getElementById("deposit_password");
+    var deposit_money = document.getElementById("deposit_money");
+    var deposit_password = document.getElementById("deposit_password");
     function deposit_encrypt() {
         var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
-        var enc_money = CryptoJS.DES.encrypt(money.value, keyHex, {
+        var enc_money = CryptoJS.DES.encrypt(deposit_money.value, keyHex, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
-        var enc_password = CryptoJS.DES.encrypt(password.value, keyHex, {
+        var enc_password = CryptoJS.DES.encrypt(deposit_password.value, keyHex, {
             mode: CryptoJS.mode.ECB,
             padding: CryptoJS.pad.Pkcs7
         });
-        money.value = enc_money;
-        password.value = enc_password;
+        deposit_money.value = enc_money;
+        deposit_password.value = enc_password;
     }
 </script>
 </html>

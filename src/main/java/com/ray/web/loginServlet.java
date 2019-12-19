@@ -42,8 +42,8 @@ public class loginServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        System.out.println(username);
-        System.out.println(password);
+       // System.out.println(username);
+      //  System.out.println(password);
         try {
             username = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
             password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
@@ -68,7 +68,7 @@ public class loginServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath()+"/account.jsp");
         }
         else {
-            request.setAttribute("login_msg","用户名或密码错误");
+            request.setAttribute("msg","用户名或密码错误");
             request.getRequestDispatcher("/index.jsp").forward(request,response);
             return;
         }

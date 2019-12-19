@@ -6,23 +6,10 @@ import java.sql.Timestamp;
 public class Detail {
 
 
-
     private String username;
-    private int in;
-    private int out;
-    private Timestamp timestamp;
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
-
-
-
-
+    private double into;
+    private double out;
+    private String time;
 
     public String getUsername() {
         return username;
@@ -32,30 +19,41 @@ public class Detail {
         this.username = username;
     }
 
-    public int getIn() {
-        return in;
+    public double getInto() {
+        return into;
     }
 
-    public void setIn(int in) {
-        this.in = in;
+    public void setInto(double into) {
+        this.into = into;
     }
 
-    public int getOut() {
+    public double getOut() {
         return out;
     }
 
-    public void setOut(int out) {
+    public void setOut(double out) {
         this.out = out;
     }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+
 
     @Override
     public String toString() {
         return "Detail{" +
                 "username='" + username + '\'' +
-                ", in=" + in +
+                ", into=" + into +
                 ", out=" + out +
-                ", timestamp=" + timestamp +
+                ", time='" + time + '\'' +
                 '}';
     }
+
 
 }

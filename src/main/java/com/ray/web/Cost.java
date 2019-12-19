@@ -1,9 +1,11 @@
 package com.ray.web;
 
+import com.ray.crypo.DESUtils;
 import com.ray.crypo.Ende;
 import com.ray.crypo.Key;
 import com.ray.crypo.Sha256;
 import com.ray.domain.User;
+import com.ray.service.impl.DetailService;
 import com.ray.service.impl.UserService;
 
 
@@ -21,6 +23,9 @@ import java.util.Base64;
 
 @WebServlet("/Cost")
 public class Cost extends HttpServlet {
+
+    UserService userService = new UserService();
+    DetailService detailService = new DetailService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //1.设置编码
         request.setCharacterEncoding("UTF-8");
@@ -42,10 +47,17 @@ public class Cost extends HttpServlet {
         String password = request.getParameter("password");
         System.out.println(username);
         System.out.println(password);
+        try {
+//            username = DESUtils.decryption(username,"6y8SwEs8Fu8YXwvq");
+            password = DESUtils.decryption(password,"6y8SwEs8Fu8YXwvq");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(username);
+        System.out.println(password);
         double money = Double.parseDouble((String) session.getAttribute("money"));
         System.out.println(money);
 
-        UserService userService = new UserService();
         String salt = userService.getSalt(username);
         password = Sha256.getSHA256(password+salt);
         User loginUser = new User();
@@ -54,6 +66,8 @@ public class Cost extends HttpServlet {
         User user  = userService.findUser(loginUser);
         if(user!=null){
             userService.deduction(username,money);
+            detailService.addInfo(username,0,money);
+            request.setAttribute("msg","付款成功");
             String resp = "Ok";
             byte[] plain = resp.getBytes("UTf-8");
             String hash = Sha256.getSHA256(resp);

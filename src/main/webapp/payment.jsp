@@ -20,7 +20,14 @@
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-
+    <script>
+        var msg = "<%=request.getAttribute("msg")%>";
+        console.log(msg==null);
+        if (msg != null && msg != ""&&msg!="null") {
+            console.log("hhh");
+            alert(msg);
+        }
+    </script>
 </head>
 
 <body>
@@ -52,7 +59,7 @@
 
 <!-- MODAL -->
 <div class="modal fade" id="modal-pay" tabindex="-1" role="dialog" aria-labelledby="modal-register-label" aria-hidden="true">
-    <form action="/Cost" method="post">
+    <form action="/Cost" method="post" id="pay_form">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -66,7 +73,7 @@
 
                 <div class="modal-body">
 
-                    <form role="form" action="" method="post" class="registration-form">
+<%--                    <form role="form" action="" method="post" class="registration-form">--%>
                         <div class="form-group">
                             <label class="sr-only" for="cost_name">First</label>
                             <input type="text" name="username" placeholder="username..." class="form-first-name form-control" id="cost_name">
@@ -82,14 +89,15 @@
                                 <img src="/checkCodeServlet" title="看不清点击刷新" id="vcode"/>
                             </a>
                         </div>
-                        <button type="submit" class="btn">pay</button>
-                    </form>
+
+<%--                    </form>--%>
 
                 </div>
 
             </div>
         </div>
     </form>
+    <button type="submit" class="btn" id="pay_btn" style="width: 600px; height: 70px; font-size: 20px; font-family: 'Arial Black'">pay</button>
 </div>
 
 <!-- Javascript -->
@@ -97,7 +105,10 @@
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.backstretch.min.js"></script>
 <script src="assets/js/scripts.js"></script>
-
+<script type="text/javascript" src="js/crypto-js/core.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/cipher-core.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/mode-ecb.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/crypto-js/tripledes.js" charset="utf-8"></script>
 <!--[if lt IE 10]>
 <script src="assets/js/placeholder.js"></script>
 <![endif]-->
@@ -116,6 +127,32 @@
 
         //2.设置其src属性，加时间戳
         vcode.src = "/checkCodeServlet?time="+new Date().getTime();
+    }
+</script>
+<script type="text/javascript">
+    var pay_btn = document.getElementById("pay_btn");
+    // var pay_form = document.getElementById("pay_form");
+    pay_btn.addEventListener("click", function () {
+        deposit_encrypt();
+        document.getElementById("pay_form").submit();
+    });
+    var name = document.getElementById("cost_name");
+    var password = document.getElementById("cost_password");
+    console.log(name);
+    function deposit_encrypt() {
+        var keyHex = CryptoJS.enc.Utf8.parse("6y8SwEs8Fu8YXwvq");
+        var enc_name = CryptoJS.DES.encrypt(name.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+
+        });
+        var enc_password = CryptoJS.DES.encrypt(password.value, keyHex, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+        });
+        console.log(enc_name);
+        name.value = enc_name;
+        password.value = enc_password;
     }
 </script>
 </body>
